@@ -1,0 +1,48 @@
+##### greenbox #####
+
+sudo apt install ansible 
+sudo apt install etherwake sshpass
+sudo chmod u+s $(which etherwake) #non root execution
+
+
+
+
+/usr/lib/firmware/rtlwifi/rtl8188eufw.bin
+dnf --enablerepo=elrepo-testing install kmod-r8188eu
+
+#### VirtualBox VERR_VM_DRIVER_VERSION_MISMATCH error ######
+sudo apt-get purge 'virtualbox*'
+udo apt-get install virtualbox
+
+#### redhat 8 restart networking ####
+nmcli networking off; nmcli networking on
+
+#### redhat 8 wifi #####
+lsusb -v
+nmcli connection show
+nmcli dev wifi connect your-wifi-ssid password wifi-password
+nmcli connection up your-wifi-connection
+lsmod |grep 8188
+modinfo r8188eu
+modprobe .?
+sudo find / -name 8188eu.ko
+insmod /lib/modules/<version>/kernel/drivers/net/wireless/r8188eu.ko
+modprobe lib80211
+modprobe cfg80211
+modprobe 8188eu
+sudo rmmod r8188eu; sudo modprobe r8188eu rtw_power_mgnt=0 #remove power mgmt
+echo "blacklist rtl8192cu"  >>  /etc/modprobe.d/blacklist.conf
+
+#### redhat 8 8188 wifi dongle ####
+sudo dnf search wireless
+sudo dnf install all
+
+
+########## switchoff all cores except 0 ########
+for x in /sys/devices/system/cpu/cpu[1-9]*/online; do
+  echo 0 >"$x"
+done
+
+for x in /sys/devices/system/cpu/cpu[1-9]*/online; do
+  echo 1 >"$x"
+done

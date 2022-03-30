@@ -1,0 +1,5 @@
+- hosts: energy-pool
+  gather_facts: no
+  tasks:
+  - name: Turn off computers
+    shell: sudo shutdown
