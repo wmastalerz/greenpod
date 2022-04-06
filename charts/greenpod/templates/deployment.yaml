@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: greenpod
+  name: greenpod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greenpod
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: greenpod
+    spec:
+      containers:
+      - image: wmastalerz/ansible-centos
+        name: ansible-centos
+        resources: {}
