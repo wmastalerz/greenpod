@@ -11,7 +11,7 @@ ret = v1.list_pod_for_all_namespaces(watch=False)
 for i in ret.items:
     for j in i.spec.containers:
         if j.resources.requests or j.resources.limits:
-            sumreq=sumreq+j.rerources.requests
+            #sumreq=sumreq+j.rerources.requests
             print(i.spec.node_name, j.name, j.resources)
 
 
