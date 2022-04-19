@@ -1,18 +1,16 @@
 # This playbook wakes up all/selected desktop system.
 
 - hosts: energy_wake
-  gather_facts: no
-  become: yes
+#  gather_facts: no
   vars:
     macaddress: "d4:85:64:c9:26:10"
 
   tasks:
-  #- name: "List facts"
-  #  ansible.builtin.debug:
-  #    var: ansible_facts
+  - name: "List facts"
+    ansible.builtin.debug:
+      var: ansible_facts
   - name: "look for host"
-    shell: macaddress = $(arp |grep C |grep eth0 |awk '{print $3}')  #old connection
-    shell: echo {{ macaddress }}
+    shell: arp |grep C |grep eth0 |awk '{print $3}'  #old connection
   - name: "Wake remote host"
     shell: etherwake '{{ macaddress }}'
     #- hosts: energy-pool
