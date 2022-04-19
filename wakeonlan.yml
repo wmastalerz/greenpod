@@ -2,7 +2,7 @@
 
 - hosts: energy_wake
   gather_facts: no
-  become: yes
+  #become: yes
   vars:
     macaddress: "d4:85:64:c9:26:10"
 
@@ -11,10 +11,20 @@
   #  ansible.builtin.debug:
   #    var: ansible_facts
   - name: "look for host"
-    shell: macaddress = $(arp |grep C |grep eth0 |awk '{print $3}')  #old connection
-    shell: echo {{ macaddress }}
-  - name: "Wake remote host"
-    shell: etherwake '{{ macaddress }}'
+    shell: arp |grep C |grep eth0 |awk '{print $3}' |head -n 1  #old connection
+    register: wolmacaddress
+    ignore_errors: True
+
+  - name: "wake remote host"
+    shell: etherwake '{{ wolmacaddress.stdout }}'
+    when: wolmacaddress is success
+
+  - set_fact:
+      waladdr: "{{ wolmacaddress.stdout }}"
+  - debug:
+      var: waladdr
+      
+      
     #- hosts: energy-pool
     #  gather_facts: no
     #  tags: test
