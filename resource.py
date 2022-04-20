@@ -1,4 +1,7 @@
 from kubernetes import client, config
+import json
+
+from requests import request
 
 # Configs can be set in Configuration class directly or using helper utility
 config.load_kube_config()
@@ -11,7 +14,9 @@ ret = v1.list_pod_for_all_namespaces(watch=False)
 for i in ret.items:
     for j in i.spec.containers:
         if j.resources.requests or j.resources.limits:
+            #s1 = json.dumps(j.resources)
+            #a = json.loads(s1)
             #sumreq=sumreq+j.rerources.requests
-            print(i.spec.node_name, j.name, j.resources)
+            print(i.spec.node_name, j.name, j.resources, a['requests']['cpu'])
 
 
