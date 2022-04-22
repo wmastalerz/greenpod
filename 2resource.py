@@ -7,7 +7,7 @@ config.load_kube_config()
 
 nores_cpu=0.1
 sumcpu=0
-container_nores=0
+containers_nores=0
 suffix = {"m": 0.001}
 v1 = client.CoreV1Api()
 ret = v1.list_pod_for_all_namespaces(watch=False)
@@ -27,10 +27,10 @@ for i in ret.items:
                             valcpur=float(res['requests']['cpu'])
                         sumcpu=sumcpu+valcpur
         else:
-            container_nores=container_nores+1
+            containers_nores=containers_nores+1
     print(i.spec.node_name, j.name, j.resources, sumcpu)
-sumcpu=sumcpu+container_nores*nores_cpu
-print("Pod containers without resources:", container_nores)
+sumcpu=sumcpu+containers_nores*nores_cpu
+print("Pod containers without resources:", containers_nores)
 print("Pod resources cpu (+0.1 vcpu per unrequested pod):", sumcpu)
 
 
