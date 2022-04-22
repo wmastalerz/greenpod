@@ -5,7 +5,9 @@ from requests import request
 # Configs can be set in Configuration class directly or using helper utility
 config.load_kube_config()
 
+nores_cpu=0.1
 sumcpu=0
+pod_nores_count=0
 suffix = {"m": 0.001}
 v1 = client.CoreV1Api()
 print("Listing pods with their IPs:")
@@ -17,14 +19,19 @@ for i in ret.items:
             rs=client.ApiClient().sanitize_for_serialization(j.resources)
             rsd=json.dumps(rs)
             res=json.loads(rsd)
-            for key, value in res.items():
-                if 'cpu' in res['requests']:
+            for key, value in res['requests'].items():
+                if 'cpu' in key:
                     for mult in suffix:
                         if mult in res['requests']['cpu']:
                             valcpur=float(res['requests']['cpu'].replace(mult,"")) * suffix[mult]
                         else:
                             valcpur=float(res['requests']['cpu'])
                         sumcpu=sumcpu+valcpur
+        else:
+            pod_nores_count=pod_nores_count+1
     print(i.spec.node_name, j.name, j.resources, sumcpu)
+sumcpu=sumcpu+pod_nores_count*nores_cpu
+print("Pod containers without resources:", pod_nores_count)
+print("Pod resources cpu (+0.1 vcpu per unrequested pod):", sumcpu)
 
 
