@@ -6,7 +6,7 @@ from requests import request
 config.load_kube_config()
 
 sumcpu=0
-suffix = {"m": 0.001, "u":0.000001}
+suffix = {"m": 0.001}
 v1 = client.CoreV1Api()
 print("Listing pods with their IPs:")
 ret = v1.list_pod_for_all_namespaces(watch=False)
@@ -18,11 +18,13 @@ for i in ret.items:
             rsd=json.dumps(rs)
             res=json.loads(rsd)
             for key, value in res.items():
-                if 'cpu' in res[key]:
+                if 'cpu' in res['requests']:
                     for mult in suffix:
-                        if mult in res[key]['cpu']:
-                            valcpu=float(res[key]['cpu'].replace(mult,"")) * suffix[mult] 
-                            sumcpu=sumcpu+valcpu
+                        if mult in res['requests']['cpu']:
+                            valcpur=float(res['requests']['cpu'].replace(mult,"")) * suffix[mult]
+                        else:
+                            valcpur=float(res['requests']['cpu'])
+                        sumcpu=sumcpu+valcpur
     print(i.spec.node_name, j.name, j.resources, sumcpu)
 
 
