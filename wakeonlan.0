@@ -1,8 +1,0 @@
-# This playbook wakes up all/selected systems. 
-
-- hosts: other
-  gather_facts: no
-    
-  tasks:
-  - name: test
-    shell: echo "fasdfasdfa"
