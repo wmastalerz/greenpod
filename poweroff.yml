@@ -1,4 +1,4 @@
-- hosts: energy-pool
+- hosts: energy_wake
   gather_facts: no
   tasks:
   - name: Turn off computers

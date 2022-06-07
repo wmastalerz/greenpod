@@ -1,0 +1,38 @@
+# This playbook read cpu needs from kubernetes and trim the host.
+
+- hosts: energy_wake
+  gather_facts: no
+  #become: yes
+  vars:
+    vcpu: 1
+
+
+  tasks:
+  #- name: "List facts"
+  #  ansible.builtin.debug:
+  #    var: ansible_facts
+  - name: "read current vCPU needs"
+    kubereq:
+    register: vcpu
+    ignore_errors: True
+
+  - debug:
+      var: mac
+
+  - name: "wake remote host from arp table"
+    shell: etherwake '{{ wolmacaddress.stdout }}'
+    ignore_errors: True
+    when: wolmacaddress.stdout is defined
+
+  - name: "wake remote host from inventorized mac addres"
+    shell: etherwake '{{ mac }}'
+    ignore_errors: True
+    #changed_when: "'FAILED' not in wolmacaddress.stdout"
+
+    #- hosts: energy-pool
+    #  gather_facts: no
+    #  tags: test
+    #  tasks:
+    #  - name: Wait for the system's service to come online
+    #    wait_for_connection:
+    #      timeout: 30

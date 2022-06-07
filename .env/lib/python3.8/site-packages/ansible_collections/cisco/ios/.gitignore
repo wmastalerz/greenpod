@@ -1,0 +1,15 @@
+# Unit test / coverage reports
+.tox
+.cache
+
+# Byte-compiled / optimized / DLL files
+__pycache__
+*.py[cod]
+.coverage
+.coverage.*
+.pytest_cache
+
+# ide
+.vscode
+
+changelogs/.plugin-cache.yaml

@@ -18,6 +18,6 @@ spec:
         app: greenpod
     spec:
       containers:
-      - image: wmastalerz/ansible-centos
+        - image: wmastalerz/ansible-centos:latest
         name: ansible-centos
         resources: {}
